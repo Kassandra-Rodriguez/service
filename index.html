@@ -917,7 +917,7 @@
             </div>
             <div>
               <div class="ct-info-lbl">Phone</div>
-              <div class="ct-info-val">(915) 701-1475</div>
+              <div class="ct-info-val" data-phone>(915) 701-1475</div>
             </div>
           </div>
 
@@ -927,7 +927,7 @@
             </div>
             <div>
               <div class="ct-info-lbl">Email</div>
-              <div class="ct-info-val">info@patriotcarpetcleaning.com</div>
+              <div class="ct-info-val" data-email>info@patriotcarpetcleaning.com</div>
             </div>
           </div>
 
@@ -937,7 +937,7 @@
             </div>
             <div>
               <div class="ct-info-lbl">Hours</div>
-              <div class="ct-info-val">Mon – Fri: 7:00 AM – 6:00 PM<br>Saturday: 8:00 AM – 3:00 PM</div>
+              <div class="ct-info-val" data-hours>Mon – Fri: 7:00 AM – 6:00 PM<br>Saturday: 8:00 AM – 3:00 PM</div>
             </div>
           </div>
 
@@ -1043,8 +1043,8 @@
         <div>
           <div class="ftr-col-t">Contact</div>
           <ul class="ftr-ul">
-            <li>(915) 701-1475</li>
-            <li>info@patriotcarpetcleaning.com</li>
+            <li data-phone>(915) 701-1475</li>
+            <li data-email>info@patriotcarpetcleaning.com</li>
             <li>El Paso, TX</li>
             <li style="margin-top:.25rem"><a class="acc" href="#">patriotcarpetcleaning.com</a></li>
           </ul>
@@ -1070,7 +1070,7 @@
         <div class="ch-msg">Hi there! 👋 How can we help you today?</div>
         <div class="ch-qs">
           <button class="ch-qb b" onclick="toggleModal(true);toggleChat()">Request a free quote</button>
-          <button class="ch-qb gr">Call (915) 701-1475</button>
+          <button class="ch-qb gr">Call <span data-phone>(915) 701-1475</span></button>
         </div>
         <div class="ch-ir">
           <input type="text" placeholder="Type a message..." />
@@ -1261,6 +1261,24 @@
       }, { passive: true });
       window.addEventListener('touchend', () => { dragging = false; });
     })();
+
+  // ── LOAD EDITABLE CONTENT ──
+  fetch('/content/site.json')
+    .then(r => r.json())
+    .then(data => {
+      document.querySelectorAll('[data-phone]').forEach(el => {
+        el.textContent = data.phone || el.textContent;
+      });
+
+      document.querySelectorAll('[data-email]').forEach(el => {
+        el.textContent = data.email || el.textContent;
+      });
+
+      document.querySelectorAll('[data-hours]').forEach(el => {
+        el.innerHTML = data.hoursHtml || el.innerHTML;
+      });
+    })
+    .catch(err => console.error('Content load error:', err));
 
   </script>
 </body>
